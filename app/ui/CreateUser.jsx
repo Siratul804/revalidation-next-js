@@ -2,12 +2,38 @@
 import { IoCreateOutline } from "react-icons/io5";
 import { addUser } from "@/app/lib/actions";
 import toast from "react-hot-toast";
-import { useFormState } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
+import { useEffect } from "react";
 
 const CreateUser = () => {
-  const [state, formAction] = useFormState(addUser, undefined);
+  function Submit() {
+    const { pending } = useFormStatus();
+    return (
+      <button
+        type="submit"
+        className="btn btn-sm btn-neutral"
+        disabled={pending}
+      >
+        {pending ? "Creating..." : "Create"}
+      </button>
+    );
+  }
 
-  console.log(state && state);
+  const initialState = {
+    message: "",
+  };
+
+  const [state, formAction] = useFormState(addUser, initialState);
+
+  useEffect(() => {
+    if (state?.message === "Name Added") {
+      document.getElementById("my_modal_3").close();
+      toast.success("Name Added");
+    } else if (state?.message === "Name Exits") {
+      toast.error("Name Exits");
+    }
+  }, [state]);
+
   return (
     <>
       <div className=" p-4 flex justify-center bg-white">
@@ -35,12 +61,6 @@ const CreateUser = () => {
                   <form
                     action={async (formData) => {
                       const name = formData.get("name");
-
-                      if (name) {
-                        document.getElementById("my_modal_3").close();
-                        toast.success("Name Created Successfully");
-                      }
-
                       await formAction(name);
                     }}
                   >
@@ -61,12 +81,16 @@ const CreateUser = () => {
                     </div>
                     <br />
                     <div>
-                      <button
-                        type="submit"
-                        className="btn btn-sm btn-neutral h-[6vh] text-white w-[35vh] rounded-md "
-                      >
-                        Create
-                      </button>
+                      <Submit />
+                      <div className="flex justify-end ">
+                        {state?.message === "Name Exits" ? (
+                          <>
+                            <p className="text-red-500">Error</p>
+                          </>
+                        ) : (
+                          <></>
+                        )}
+                      </div>
                     </div>
                   </form>
                 </section>

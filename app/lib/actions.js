@@ -1,7 +1,7 @@
 "use server";
 import { query } from "./db";
-import { revalidateTag } from "next/cache";
-import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
+
 
 export const addUser = async (prevState, name) => {
    
@@ -25,12 +25,16 @@ export const addUser = async (prevState, name) => {
 
       console.log(newUser);
     } catch (err) {
-      return "User Already Exits"
+      return {
+        message: 'Name Exits',
+      }
       
     }
   
-    revalidateTag("create-name");
-    redirect("/");
+    revalidatePath("/ctrl/create")
+    return {
+      message: 'Name Added',
+    }
 
   };
   
@@ -46,6 +50,5 @@ export const addUser = async (prevState, name) => {
     if (deleteMember) {
       console.log("user deleted");
     }
-    revalidateTag("delete-name");
-    redirect("/ctrl/create");
+    revalidatePath("/ctrl/create")
   };
