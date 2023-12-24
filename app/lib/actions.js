@@ -39,16 +39,55 @@ export const addUser = async (prevState, name) => {
   };
   
 
-  export const deleteUser = async (formData) => {
+  export const deleteUser = async (prevState,formData) => {
     const { id } = Object.fromEntries(formData);
-  
-    const deleteMember = await query({
-      query: "DELETE FROM user_name WHERE id = (?)",
-      values: [id],
-    });
-  
-    if (deleteMember) {
-      console.log("user deleted");
+
+    try{
+      const deleteMember = await query({
+        query: "DELETE FROM user_name WHERE id = (?)",
+        values: [id],
+      });
+
+      console.log(deleteMember)
+
+    } catch (err) {
+      console.log(err)
+      return {
+        message: 'failed delete',
+      }
     }
+  
     revalidatePath("/ctrl/create")
+   
+    return {
+      message: 'deleted',
+    }
+   
+  };
+
+  export const updateUser = async (prevState, formData) => {
+    const { id, name} =
+      Object.fromEntries(formData);
+  
+      console.log(name)
+
+    try {
+      const newUser = await query({
+        query:
+          "UPDATE user_name SET  name = ? WHERE id = ?",
+        values: [name, id],
+      });
+  
+      console.log(newUser);
+    } catch (err) {
+      console.log(err);
+      return {
+        message: "Failed",
+      };
+    }
+  
+    revalidatePath("/ctrl/create");
+    return {
+      message: "Updated",
+    };
   };

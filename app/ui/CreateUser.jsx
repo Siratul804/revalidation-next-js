@@ -11,7 +11,7 @@ const CreateUser = () => {
     return (
       <button
         type="submit"
-        className="btn btn-sm btn-neutral"
+        className="btn btn-sm btn-neutral w-full text-white "
         disabled={pending}
       >
         {pending ? "Creating..." : "Create"}
@@ -71,7 +71,7 @@ const CreateUser = () => {
                         </label>
                         <input
                           type="text"
-                          placeholder="name"
+                          placeholder="Name"
                           name="name"
                           required
                           autocomplete="off"

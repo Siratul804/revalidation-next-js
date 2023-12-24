@@ -19,7 +19,7 @@ const Create = async () => {
 
         <ShowUser data={userData} />
       </div>
-      <Toaster />
+      <Toaster position="bottom-right" reverseOrder={false} />
     </>
   );
 };
