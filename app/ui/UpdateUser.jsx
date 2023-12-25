@@ -6,12 +6,18 @@ import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 
 const UpdateUser = ({ id, name }) => {
+  const [formValues, setFormValues] = useState({});
+
+  useEffect(() => {
+    // Update the form values whenever props change
+    setFormValues({ id, name });
+  }, [id, name]);
+
   const initialState = {
     message: "",
     updatedName: name,
   };
   const [state, formAction] = useFormState(updateUser, initialState);
-  const [updatedName, setUpdatedName] = useState(name);
   useEffect(() => {
     if (state?.message === "Updated") {
       toast.success("Name Updated ");
@@ -20,10 +26,6 @@ const UpdateUser = ({ id, name }) => {
       toast.error("Failed to Update Name");
     }
   }, [state]);
-
-  const handleChange = (event) => {
-    setUpdatedName(event.target.value); // Update updatedName state
-  };
 
   function Submit() {
     const { pending } = useFormStatus();
@@ -82,8 +84,7 @@ const UpdateUser = ({ id, name }) => {
                       type="text"
                       placeholder="name"
                       name="name"
-                      value={updatedName} // Use updatedName in value
-                      onChange={handleChange} // Add onChange event
+                      defaultValue={formValues.name || ""}
                       required
                       autocomplete="off"
                       // className="input input-sm  bg-white  text-black border-black focus:outline-black focus:border-black w-[35vh]"
