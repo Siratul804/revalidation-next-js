@@ -14,17 +14,37 @@ export async function GetUserData(request) {
 }
 
 
-export async function SearchData(prevState, formData) {
-  const { name } = Object.fromEntries(formData);
+export async function SearchData(name) {
   console.log(name)
-  const queryStr = name ? "SELECT * FROM user_name WHERE `name` LIKE ?" : "SELECT * FROM user_name";
-  const values = name ? [`%${name}%`] : [];
-
-  const searchData = await query({
-    query: queryStr,
-    values: values,
+  const search = await query({
+    query:
+      "SELECT * FROM user_name WHERE `name` LIKE ?",
+    values: [`%${name}%`],
   });
 
-  console.log(searchData)
-  return searchData;
+  
+  return {search};
+
 }
+
+export const searchForm = async (prevState, formData) => {
+
+  if(!formData) {
+    throw new Error('Invalid formData');
+  }
+
+  const { name } =
+    Object.fromEntries(formData);
+ 
+   console.log(name)
+
+    const searchData = await query({
+      query:
+        "SELECT * FROM user_name WHERE `name` LIKE ?",
+      values: [`%${name}%`],
+    });
+  
+    
+    return {searchData};
+
+};

@@ -6,7 +6,15 @@ import { useEffect } from "react";
 import toast from "react-hot-toast";
 import UpdateUser from "./UpdateUser";
 
-const ShowUser = ({ data }) => {
+const ShowUser = ({ data, searchData }) => {
+  // const [search, setSearch] = useState();
+
+  // useEffect(() => {
+  //   setSearch(searchData);
+  // }, [searchData]);
+
+  console.log(searchData);
+
   function Submit() {
     const { pending } = useFormStatus();
     return (
@@ -51,6 +59,12 @@ const ShowUser = ({ data }) => {
             </form>
             <UpdateUser name={val.name} id={val.id} />
           </div>
+        </>
+      ))}
+      {searchData.map((val) => (
+        <>
+          <h1>Search Value</h1>
+          <p>{val.name}</p>
         </>
       ))}
     </>

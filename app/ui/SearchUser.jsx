@@ -1,44 +1,36 @@
 "use client";
-import { SearchData } from "@/app/lib/data";
-import { useFormState, useFormStatus } from "react-dom";
+
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 const SearchUser = () => {
-  function Submit() {
-    const { pending } = useFormStatus();
-    return (
-      <button
-        type="submit"
-        className="btn btn-sm btn-neutral w-[300px] text-white "
-        disabled={pending}
-      >
-        {pending ? "Creating..." : "Create"}
-      </button>
-    );
-  }
+  const searchParams = useSearchParams();
+  const { replace } = useRouter();
+  const pathname = usePathname();
 
-  const initialState = {
-    message: "",
+  const handleSearchName = (e) => {
+    const params = new URLSearchParams(searchParams);
+
+    params.set("name", e.target.value);
+
+    replace(`${pathname}?${params}`);
   };
-
-  const [state, formAction] = useFormState(SearchData, initialState);
-
-  console.log(state);
 
   return (
     <>
-      <form action={formAction}>
-        <div className=" p-4 flex justify-center bg-white text-black ">
-          <input
-            type="text"
-            placeholder="Type here"
-            name="name"
-            defaultValue=""
-            className="input input-bordered bg-white input-sm w-full max-w-xs"
-          />
-        </div>
-        <div className=" p-0 flex justify-center bg-white text-black ">
-          <Submit />
-        </div>
-      </form>
+      <div className=" p-4 flex justify-center bg-white text-black ">
+        <input
+          type="text"
+          placeholder="Type here"
+          name="name"
+          defaultValue=""
+          onChange={handleSearchName}
+          className="input input-bordered bg-white input-sm w-full max-w-xs"
+        />
+      </div>
+      <div className=" p-0 flex justify-center bg-white text-black ">
+        <button className="btn btn-sm btn-neutral w-[300px] text-white ">
+          Search
+        </button>
+      </div>
     </>
   );
 };
