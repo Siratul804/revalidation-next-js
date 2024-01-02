@@ -91,3 +91,37 @@ export const addUser = async (prevState, name) => {
       message: "Updated",
     };
   };
+
+
+  //permission 
+
+  export const addRole = async (prevState, formData) => {
+   
+    const view = formData.get("view") === null ? "off" : "on" ;
+    // const view = formData.get("view") === null ? false : true ;
+  
+      console.log(view)
+
+      
+      try {
+      const newRole = await query({
+        query:
+          "INSERT INTO permission (view) VALUES (?)",
+        values: [view],
+      });
+
+      console.log(newRole);
+    } catch (err) {
+      console.log(err)
+      return {
+        message: 'wrong',
+      }
+      
+    }
+  
+    revalidatePath("/ctrl/role")
+    return {
+      message: 'added',
+    }
+
+  };
