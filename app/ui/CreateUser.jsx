@@ -2,19 +2,19 @@
 import { IoCreateOutline } from "react-icons/io5";
 import { addUser } from "@/app/lib/actions";
 import toast from "react-hot-toast";
-import { useFormState, useFormStatus } from "react-dom";
-import { useEffect } from "react";
+import { useFormState } from "react-dom";
+import { useEffect, useState } from "react";
 
 const CreateUser = () => {
+  const [loading, setLoading] = useState(false);
   function Submit() {
-    const { pending } = useFormStatus();
     return (
       <button
         type="submit"
         className="btn btn-sm btn-neutral w-full text-white "
-        disabled={pending}
+        disabled={loading}
       >
-        {pending ? "Creating..." : "Create"}
+        {loading ? "Creating..." : "Create"}
       </button>
     );
   }
@@ -24,6 +24,29 @@ const CreateUser = () => {
   };
 
   const [state, formAction] = useFormState(addUser, initialState);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // Prevent the default form submission
+
+    const formData = new FormData(event.target);
+    const name = formData.get("name");
+    const email = formData.get("email");
+
+    setLoading(true); // Set loading to true while submitting
+
+    try {
+      const response = await addUser(name, email);
+      if (response?.message === "Name aise") {
+        alert("yell huu !");
+      } else if (response?.message === "Name Exits") {
+        alert("ops yei huu!");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    } finally {
+      setLoading(false); // Set loading back to false after submission
+    }
+  };
 
   useEffect(() => {
     if (state?.message === "Name Added") {
@@ -58,12 +81,7 @@ const CreateUser = () => {
               </h3>
               <div className="flex justify-center">
                 <section className="flex justify-center">
-                  <form
-                    action={async (formData) => {
-                      const name = formData.get("name");
-                      await formAction(name);
-                    }}
-                  >
+                  <form onSubmit={handleSubmit}>
                     <div className="flex justify-between sm:flex-row flex-col  ">
                       <main className="pr-1">
                         <label className="label">
@@ -73,6 +91,19 @@ const CreateUser = () => {
                           type="text"
                           placeholder="Name"
                           name="name"
+                          required
+                          autocomplete="off"
+                          className=" input  h-[6vh] bg-[#FFFFFF] appearance-none border-1 border-[#8d94b0] rounded-md w-[35vh] py-2 px-4 text-black leading-tight focus:outline-none focus:bg-white focus:border-black"
+                        />
+                      </main>
+                      <main className="pr-1">
+                        <label className="label">
+                          <span className="text-[black] text-sm"> email </span>
+                        </label>
+                        <input
+                          type="email"
+                          placeholder="email"
+                          name="email"
                           required
                           autocomplete="off"
                           className=" input  h-[6vh] bg-[#FFFFFF] appearance-none border-1 border-[#8d94b0] rounded-md w-[35vh] py-2 px-4 text-black leading-tight focus:outline-none focus:bg-white focus:border-black"

@@ -3,8 +3,10 @@ import { query } from "./db";
 import { revalidatePath } from "next/cache";
 
 
-export const addUser = async (prevState, name) => {
-   
+export const addUser = async (name, email) => {
+  
+  console.log(name,email)
+
     try {
       const user = await query({
         query: "SELECT name FROM user_name WHERE name = (?)",
@@ -33,7 +35,8 @@ export const addUser = async (prevState, name) => {
   
     revalidatePath("/ctrl/create")
     return {
-      message: 'Name Added',
+      message: 'Name aise',
+     
     }
 
   };
