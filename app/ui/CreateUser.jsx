@@ -37,7 +37,8 @@ const CreateUser = () => {
     try {
       const response = await addUser(name, email);
       if (response?.message === "Name aise") {
-        alert("yell huu !");
+        document.getElementById("my_modal_3").close();
+        toast.success("Name Added");
       } else if (response?.message === "Name Exits") {
         alert("ops yei huu!");
       }
@@ -49,7 +50,7 @@ const CreateUser = () => {
   };
 
   useEffect(() => {
-    if (state?.message === "Name Added") {
+    if (state?.message === "Name aise") {
       document.getElementById("my_modal_3").close();
       toast.success("Name Added");
     } else if (state?.message === "Name Exits") {

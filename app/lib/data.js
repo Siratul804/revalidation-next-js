@@ -14,18 +14,6 @@ export async function GetUserData(request) {
 }
 
 
-export async function SearchData(name) {
-  console.log(name)
-  const search = await query({
-    query:
-      "SELECT * FROM user_name WHERE `name` LIKE ?",
-    values: [`%${name}%`],
-  });
-
-  
-  return {search};
-
-}
 
 export const searchForm = async (prevState, formData) => {
 

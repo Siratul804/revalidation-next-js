@@ -3,9 +3,9 @@ import RoleUser from "@/app/ui/RoleUser";
 const Role = () => {
   return (
     <>
-      <h1>
+      <div className="bg-white text-black ">
         <RoleUser />
-      </h1>
+      </div>
     </>
   );
 };

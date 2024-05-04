@@ -1,70 +1,74 @@
 "use client";
-import { addRole } from "@/app/lib/actions";
-import toast from "react-hot-toast";
-import { useFormState, useFormStatus } from "react-dom";
-import { useEffect } from "react";
+
 import React, { useState } from "react";
 
-const RoleUser = () => {
-  const [isChecked, setIsChecked] = useState(false);
+const MyForm = () => {
+  const [checkboxes, setCheckboxes] = useState({
+    checkbox1: false,
+    checkbox2: false,
+    checkbox3: false,
+    checkbox4: false,
+    checkbox5: false,
+    checkbox6: false,
+    checkbox7: false,
+    checkbox8: false,
+  });
 
-  const handleChange = (event) => {
-    setIsChecked(event.target.checked);
+  const handleCheckboxChange = (checkboxName) => {
+    setCheckboxes((prevCheckboxes) => {
+      const updatedCheckboxes = { ...prevCheckboxes };
+
+      updatedCheckboxes[checkboxName] = !prevCheckboxes[checkboxName];
+
+      if (checkboxName === "checkbox1" && updatedCheckboxes.checkbox1) {
+        updatedCheckboxes.checkbox3 = true;
+        updatedCheckboxes.checkbox4 = true;
+      } else if (checkboxName === "checkbox2" && updatedCheckboxes.checkbox2) {
+        updatedCheckboxes.checkbox5 = true;
+        updatedCheckboxes.checkbox6 = true;
+      } else {
+        updatedCheckboxes.checkbox3 = false;
+        updatedCheckboxes.checkbox4 = false;
+        updatedCheckboxes.checkbox5 = false;
+        updatedCheckboxes.checkbox6 = false;
+      }
+
+      return updatedCheckboxes;
+    });
   };
 
-  function Submit() {
-    const { pending } = useFormStatus();
-    return (
-      <button
-        type="submit"
-        className="btn btn-sm btn-neutral w-wide text-white "
-        disabled={pending}
-      >
-        {pending ? "Creating..." : "Create Role "}
-      </button>
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const checkedValues = Object.keys(checkboxes).filter(
+      (checkbox) => checkboxes[checkbox]
     );
-  }
-
-  const initialState = {
-    message: "",
+    console.log("Checked Values:", checkedValues);
+    // You can do whatever you want with the checkedValues array here
   };
-
-  const [state, formAction] = useFormState(addRole, initialState);
-
-  useEffect(() => {
-    console.log(state);
-
-    if (state?.message === "added") {
-      toast.success("Role Added");
-    } else if (state?.message === "wrong") {
-      toast.error("Something Wrong");
-    }
-  }, [state]);
 
   return (
-    <>
-      <div className="bg-white py-[40vh] ">
-        <h1 className="p-3 text-black "> Create Role : </h1>
-        <br />
-        <form action={formAction} className="p-3">
-          <div className="flex">
-            <input
-              type="checkbox"
-              name="view"
-              value={isChecked}
-              checked={isChecked}
-              onChange={handleChange}
-            />
-            <p className="pl-2">View</p>
-          </div>
-          <br />
-          <p>Value: {isChecked ? "on" : "off"}</p>
-
-          <Submit />
-        </form>
-      </div>
-    </>
+    <form onSubmit={handleSubmit}>
+      <label>
+        Checkbox 1
+        <input
+          type="checkbox"
+          checked={checkboxes.checkbox1}
+          onChange={() => handleCheckboxChange("checkbox1")}
+        />
+      </label>
+      <label>
+        Checkbox 2
+        <input
+          type="checkbox"
+          checked={checkboxes.checkbox2}
+          onChange={() => handleCheckboxChange("checkbox2")}
+        />
+      </label>
+      {/* ... Other checkboxes ... */}
+      <br />
+      <button type="submit">Submit</button>
+    </form>
   );
 };
 
-export default RoleUser;
+export default MyForm;
