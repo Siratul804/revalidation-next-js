@@ -44,7 +44,7 @@ const ShowUser = ({ data, searchData }) => {
     <>
       {data.map((val) => (
         <>
-          <div key={val.id}>
+          <div key={val.id} className="flex justify-center flex-wrap">
             <form action={formAction} className="flex py-2 ">
               <input type="hidden" name="id" value={val.id} />
               <p className="text-green-400">{val.name}</p>

@@ -60,14 +60,14 @@ const CreateUser = () => {
 
   return (
     <>
-      <div className=" p-4 flex justify-center bg-white">
+      <div className=" p-2 flex justify-center bg-white">
         <div className="py-24">
           <button
             className="btn bg-white border-none hover:bg-white "
             onClick={() => document.getElementById("my_modal_3").showModal()}
           >
-            <h1>
-              <IoCreateOutline size={55} color="red" />
+            <h1 className="bg-black p-5 rounded-md ">
+              <IoCreateOutline size={55} color="white" />
             </h1>
           </button>
           <dialog id="my_modal_3" className="modal">
