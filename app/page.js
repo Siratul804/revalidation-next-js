@@ -2,7 +2,7 @@ import { MdOutlineCreateNewFolder } from "react-icons/md";
 import { FaUserShield } from "react-icons/fa6";
 import { CiCamera } from "react-icons/ci";
 import { BsCalendar2DateFill } from "react-icons/bs";
-
+import { FaFileInvoiceDollar } from "react-icons/fa";
 
 
 import Link from 'next/link'
@@ -22,6 +22,9 @@ export default function Home() {
       </Link>
       <Link href="/ctrl/amtDte" className='text-black text-xl font-mono hover:text-red-500 flex pl-5 '  >
       <BsCalendar2DateFill size={65} />
+      </Link>
+      <Link href="/ctrl/invoice" className='text-black text-xl font-mono hover:text-red-500 flex pl-5 '  >
+      <FaFileInvoiceDollar size={65} />
       </Link>
     </div>
     </>
